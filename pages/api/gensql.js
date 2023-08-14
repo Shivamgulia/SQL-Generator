@@ -14,9 +14,7 @@ import { ChatOpenAI } from 'langchain/chat_models/openai';
 export default async function handler(req, res) {
   console.log(req);
   const vectorStore = await Chroma.fromExistingCollection(
-    new OpenAIEmbeddings({
-      openAIApiKey: 'Your_api_key',
-    }),
+    new OpenAIEmbeddings(),
     { collectionName: 'test' }
   );
   const response = await vectorStore.similaritySearch(req.body.input, 3);
@@ -57,9 +55,7 @@ export default async function handler(req, res) {
   //   console.log(chatPrompt);
 
   const metaDataChain = new LLMChain({
-    llm: new ChatOpenAI({
-      openAIApiKey: 'Your_api_key',
-    }),
+    llm: new ChatOpenAI(),
     prompt: chatPrompt,
     verbose: true,
   });

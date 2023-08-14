@@ -37,9 +37,7 @@ export default async function handler(req, res) {
   console.log(chatPrompt);
 
   const metaDataChain = new LLMChain({
-    llm: new ChatOpenAI({
-      openAIApiKey: 'Your_api_key',
-    }),
+    llm: new ChatOpenAI(),
     prompt: chatPrompt,
     verbose: true,
   });

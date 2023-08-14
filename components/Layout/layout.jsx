@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import Link from 'next/link';
 
 import styles from '../../styles/components/Layout/Layout.module.css';
 
@@ -7,7 +8,10 @@ function layout(props) {
     <Fragment>
       <div className={`${styles.container}`}>
         <div className={`${styles.topbar}`}>
-          <h1>{props.heading}</h1>
+          <Link href='/'>
+            <h1>{props.heading}</h1>
+          </Link>
+          <div>{props.red}</div>
         </div>
         <div className={`${styles.body}`}>{props.children}</div>
       </div>

@@ -8,6 +8,9 @@
   background-color: #34495e;
   color: #ffffff;
   padding-left: 20px;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
 }
 
 .body {

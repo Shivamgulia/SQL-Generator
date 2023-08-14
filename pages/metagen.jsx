@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import Layout from '../components/Layout/layout';
+import Link from 'next/link';
 
 import styles from '../styles/pages/metagen.module.css';
 
-function metagen() {
+function Metagen() {
   const [metadata, setMetadata] = useState('');
   const [name, setName] = useState('');
   const [input, setInput] = useState('');
@@ -76,7 +77,14 @@ function metagen() {
   console.log(metadata);
 
   return (
-    <Layout heading={'Meta Data Generator'}>
+    <Layout
+      heading={'Meta Data Generator'}
+      red={
+        <Link href='/sqlgen' className={`${styles.redirect}`}>
+          <button className={`${styles.genbutton}`}>SQL Generator</button>
+        </Link>
+      }
+    >
       <div className={`${styles.container}`}>
         {error && <h2 className={`${styles.error}`}>{error}</h2>}
         <form className={`${styles.form}`} onSubmit={submitionHandler}>
@@ -118,4 +126,4 @@ function metagen() {
   );
 }
 
-export default metagen;
+export default Metagen;

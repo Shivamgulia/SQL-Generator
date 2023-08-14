@@ -7,9 +7,7 @@ export default async function handler(req, res) {
   const vectorStore = await Chroma.fromTexts(
     [req.body.text],
     [{ name: req.body.name }],
-    new OpenAIEmbeddings({
-      openAIApiKey: 'Your_api_key',
-    }),
+    new OpenAIEmbeddings(),
     {
       collectionName: 'test',
     }

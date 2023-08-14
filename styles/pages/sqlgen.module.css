@@ -34,3 +34,8 @@
 .error {
   color: red;
 }
+
+.redirect {
+  display: flex;
+  align-items: center;
+}

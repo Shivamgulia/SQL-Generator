@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout/layout';
+import Link from 'next/link';
 
 import styles from '../styles/pages/sqlgen.module.css';
 
-function sqlgen() {
+function Sqlgen() {
   const [metadata, setMetadata] = useState('');
   const [input, setInput] = useState('');
   const [error, setError] = useState(null);
@@ -44,7 +45,14 @@ function sqlgen() {
   console.log(metadata);
 
   return (
-    <Layout heading={'SQL Generator'}>
+    <Layout
+      heading={'SQL Generator'}
+      red={
+        <Link href='/metagen' className={`${styles.redirect}`}>
+          <button className={`${styles.genbutton}`}>Metadata Generator</button>
+        </Link>
+      }
+    >
       <div className={`${styles.container}`}>
         {error && <h2 className={`${styles.error}`}>{error}</h2>}
         <form className={`${styles.form}`} onSubmit={submitionHandler}>
@@ -63,13 +71,15 @@ function sqlgen() {
             Generate SQL
           </button>
         </form>
-        <div className={`${styles.generated}`}>
-          <h3>Generated SQL</h3>
-          <h4>{metadata}</h4>
-        </div>
+        {metadata && (
+          <div className={`${styles.generated}`}>
+            <h3>Generated SQL</h3>
+            <h4>{metadata}</h4>
+          </div>
+        )}
       </div>
     </Layout>
   );
 }
 
-export default sqlgen;
+export default Sqlgen;
