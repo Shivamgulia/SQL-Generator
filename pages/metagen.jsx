@@ -4,6 +4,9 @@ import Link from 'next/link';
 
 import styles from '../styles/pages/metagen.module.css';
 
+// const url = "http://localhost:3000";
+const url = 'https://sqlgen.vercel.app';
+
 function Metagen() {
   const [metadata, setMetadata] = useState('');
   const [name, setName] = useState('');
@@ -16,7 +19,7 @@ function Metagen() {
       setError(null);
       console.log(input);
 
-      fetch('http://localhost:3000/api/createmeta', {
+      fetch(`/api/createmeta`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +50,7 @@ function Metagen() {
     event.preventDefault();
 
     if (name.replace(/\s+/g, '').length > 0) {
-      fetch('http://localhost:3000/api/save', {
+      fetch(`/api/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

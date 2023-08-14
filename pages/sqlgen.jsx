@@ -4,6 +4,9 @@ import Link from 'next/link';
 
 import styles from '../styles/pages/sqlgen.module.css';
 
+// const url = "http://localhost:3000";
+const url = 'https://sqlgen.vercel.app';
+
 function Sqlgen() {
   const [metadata, setMetadata] = useState('');
   const [input, setInput] = useState('');
@@ -15,7 +18,7 @@ function Sqlgen() {
       setError(null);
       console.log(input);
 
-      fetch('http://localhost:3000/api/gensql', {
+      fetch(`/api/gensql`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
