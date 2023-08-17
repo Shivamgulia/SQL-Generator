@@ -3,21 +3,26 @@ import Layout from '../components/Layout/layout';
 import Link from 'next/link';
 
 import styles from '../styles/pages/metagen.module.css';
+import JsonFormatter from 'react-json-formatter';
+import Loaders from '../components/loaders';
 
 // const url = "http://localhost:3000";
 const url = 'https://sqlgen.vercel.app';
 
 function Metagen() {
   const [metadata, setMetadata] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [input, setInput] = useState('');
   const [error, setError] = useState(null);
 
-  function submitionHandler(event) {
+  async function submitionHandler(event) {
     event.preventDefault();
     if (input.replace(/\s+/g, '').length > 5) {
       setError(null);
       console.log(input);
+      
+      setIsLoading(true);
 
       fetch(`/api/createmeta`, {
         method: 'POST',
@@ -36,6 +41,7 @@ function Metagen() {
           // Handle the data from the successful response
           console.log('Response data:', data);
           setMetadata(data.Response.text);
+          setIsLoading(false);
         })
         .catch((error) => {
           // Handle errors that occurred during the request
@@ -46,9 +52,9 @@ function Metagen() {
     }
   }
 
-  function saveHandler(event) {
+  async function saveHandler(event) {
     event.preventDefault();
-
+    setIsLoading(true);
     if (name.replace(/\s+/g, '').length > 0) {
       fetch(`/api/save`, {
         method: 'POST',
@@ -67,6 +73,7 @@ function Metagen() {
           // Handle the data from the successful response
           console.log('Response data:', data);
           setMetadata(data.Response.text);
+          setIsLoading(false);
         })
         .catch((error) => {
           // Handle errors that occurred during the request
@@ -78,7 +85,11 @@ function Metagen() {
   }
 
   console.log(metadata);
-
+  const jsonStyle = {
+    propertyStyle: { color: 'maroon' },
+    stringStyle: { color: 'blue' },
+    numberStyle: { color: 'darkorange' }
+  }
   return (
     <Layout
       heading={'Meta Data Generator'}
@@ -88,6 +99,8 @@ function Metagen() {
         </Link>
       }
     >
+      
+    
       <div className={`${styles.container}`}>
         {error && <h2 className={`${styles.error}`}>{error}</h2>}
         <form className={`${styles.form}`} onSubmit={submitionHandler}>
@@ -106,11 +119,11 @@ function Metagen() {
             Generate Metadata
           </button>
         </form>
-
+        {isLoading && <Loaders/>}
         {metadata && (
           <div className={`${styles.generated}`}>
             <h3>Generated Metadata</h3>
-            <h4>{metadata}</h4>
+            <h4>{<JsonFormatter json={metadata} tabWith={5}  jsonStyle={jsonStyle}/>}</h4>
             <form className={`${styles.form}`} onSubmit={saveHandler}>
               <input
                 type='text'
