@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout/layout';
 import Link from 'next/link';
 
+import Loaders from '../components/loaders';
+import Button from '../components/button';
+
 import styles from '../styles/pages/sqlgen.module.css';
 
 // const url = "http://localhost:3000";
@@ -11,14 +14,16 @@ function Sqlgen() {
   const [metadata, setMetadata] = useState('');
   const [input, setInput] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  function submitionHandler(event) {
+  async function submitionHandler(event) {
     event.preventDefault();
+    setLoading(true);
     if (input.replace(/\s+/g, '').length > 5) {
       setError(null);
       console.log(input);
 
-      fetch(`/api/gensql`, {
+      await fetch(`/api/gensql`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,6 +48,19 @@ function Sqlgen() {
     } else {
       setError('Please provide proper Input');
     }
+    setLoading(false);
+  }
+
+  const splitStrings = metadata.split('Description of SQL Query');
+  var beforeDescription = '';
+  var afterDescription = '';
+  if (splitStrings.length === 2) {
+    beforeDescription = splitStrings[0].trim();
+    afterDescription = splitStrings[1].trim();
+  } else {
+    console.log(
+      "The content 'Description of SQL Query' was not found in the input string."
+    );
   }
 
   console.log(metadata);
@@ -52,7 +70,7 @@ function Sqlgen() {
       heading={'SQL Generator'}
       red={
         <Link href='/metagen' className={`${styles.redirect}`}>
-          <button className={`${styles.genbutton}`}>Metadata Generator</button>
+          <Button className={`${styles.genbutton}`}>Metadata Generator</Button>
         </Link>
       }
     >
@@ -74,10 +92,19 @@ function Sqlgen() {
             Generate SQL
           </button>
         </form>
+
+        {loading && (
+          <div style={{ margin: '20px' }}>
+            <Loaders />
+          </div>
+        )}
+
         {metadata && (
           <div className={`${styles.generated}`}>
             <h3>Generated SQL</h3>
-            <h4>{metadata}</h4>
+            {/* <h4>{metadata}</h4> */}
+            <h4>{beforeDescription}</h4>
+            <h4>{'Descreption ' + afterDescription}</h4>
           </div>
         )}
       </div>

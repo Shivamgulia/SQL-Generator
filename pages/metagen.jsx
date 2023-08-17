@@ -2,9 +2,11 @@ import React, { Fragment, useState } from 'react';
 import Layout from '../components/Layout/layout';
 import Link from 'next/link';
 
-import styles from '../styles/pages/metagen.module.css';
-import JsonFormatter from 'react-json-formatter';
 import Loaders from '../components/loaders';
+import JsonFormatter from 'react-json-formatter';
+import Button from '../components/button';
+
+import styles from '../styles/pages/metagen.module.css';
 
 // const url = "http://localhost:3000";
 const url = 'https://sqlgen.vercel.app';
@@ -21,7 +23,7 @@ function Metagen() {
     if (input.replace(/\s+/g, '').length > 5) {
       setError(null);
       console.log(input);
-      
+
       setIsLoading(true);
 
       fetch(`/api/createmeta`, {
@@ -88,19 +90,17 @@ function Metagen() {
   const jsonStyle = {
     propertyStyle: { color: 'maroon' },
     stringStyle: { color: 'blue' },
-    numberStyle: { color: 'darkorange' }
-  }
+    numberStyle: { color: 'darkorange' },
+  };
   return (
     <Layout
       heading={'Meta Data Generator'}
       red={
         <Link href='/sqlgen' className={`${styles.redirect}`}>
-          <button className={`${styles.genbutton}`}>SQL Generator</button>
+          <Button className={`${styles.genbutton}`}>SQL Generator</Button>
         </Link>
       }
     >
-      
-    
       <div className={`${styles.container}`}>
         {error && <h2 className={`${styles.error}`}>{error}</h2>}
         <form className={`${styles.form}`} onSubmit={submitionHandler}>
@@ -119,17 +119,26 @@ function Metagen() {
             Generate Metadata
           </button>
         </form>
-        {isLoading && <Loaders/>}
+        <div style={{ margin: '20px' }}>{isLoading && <Loaders />}</div>
         {metadata && (
           <div className={`${styles.generated}`}>
             <h3>Generated Metadata</h3>
-            <h4>{<JsonFormatter json={metadata} tabWith={5}  jsonStyle={jsonStyle}/>}</h4>
+            <h4>
+              {
+                <JsonFormatter
+                  json={metadata}
+                  tabWith={5}
+                  jsonStyle={jsonStyle}
+                />
+              }
+            </h4>
             <form className={`${styles.form}`} onSubmit={saveHandler}>
               <input
                 type='text'
                 onChange={(event) => {
                   setName(event.target.value);
                 }}
+                placeholder='Table Name'
               />
               <button className={`${styles.genbutton}`} type='submit'>
                 Save Metadata
