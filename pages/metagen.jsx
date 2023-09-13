@@ -14,6 +14,7 @@ const url = 'https://sqlgen.vercel.app';
 function Metagen() {
   const [metadata, setMetadata] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
   const [name, setName] = useState('');
   const [input, setInput] = useState('');
   const [error, setError] = useState(null);
@@ -56,7 +57,7 @@ function Metagen() {
 
   async function saveHandler(event) {
     event.preventDefault();
-    setIsLoading(true);
+    setIsLoading2(true);
     if (name.replace(/\s+/g, '').length > 0) {
       fetch(`/api/save`, {
         method: 'POST',
@@ -75,7 +76,6 @@ function Metagen() {
           // Handle the data from the successful response
           console.log('Response data:', data);
           setMetadata(data.Response.text);
-          setIsLoading(false);
         })
         .catch((error) => {
           // Handle errors that occurred during the request
@@ -84,6 +84,7 @@ function Metagen() {
     } else {
       setError('Provide Proper Name');
     }
+    setIsLoading2(false);
   }
 
   console.log(metadata);
@@ -143,6 +144,11 @@ function Metagen() {
               <button className={`${styles.genbutton}`} type='submit'>
                 Save Metadata
               </button>
+              {isLoading2 && (
+                <div style={{ margin: '20px' }}>
+                  <Loaders />
+                </div>
+              )}
             </form>
           </div>
         )}
